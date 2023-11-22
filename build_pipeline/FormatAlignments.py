@@ -174,11 +174,11 @@ def format_j_genes(jalignments):
 
     ffile = write_fasta(jalignments)
     al_filename = os.path.join( file_path, "muscle_alignments", "all_js_aligned.fasta" )
-    
+    print(os.environ['ANARCI_BIN'])
     if sys.platform == "darwin":
         pr = Popen( [ "muscle_macOS", "-in", ffile, "-gapopen", "-10", "-out", al_filename, ], stdout=PIPE, stderr=PIPE )
     else:
-        pr = Popen( [ "muscle", "-in", ffile, "-gapopen", "-10", "-out", al_filename, ], stdout=PIPE, stderr=PIPE )
+        pr = Popen( [os.environ['ANARCI_BIN'],"muscle", "-in", ffile, "-gapopen", "-10", "-out", al_filename, ], stdout=PIPE, stderr=PIPE )
     o, e = pr.communicate()
     aligned = read_fasta( al_filename )
     new_jalignments = {} 

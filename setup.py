@@ -10,6 +10,7 @@ class CustomInstallCommand(install):
        # Post-installation routine
        ANARCI_LOC = os.path.join(site.getsitepackages()[0], 'anarci') # site-packages/ folder
        ANARCI_BIN = sys.executable.split('python')[0] # bin/ folder
+       os.environ['ANARCI_BIN'] = ANARCI_BIN
 
        shutil.copy('bin/ANARCI', ANARCI_BIN) # copy ANARCI executable
        print("INFO: ANARCI lives in: ", ANARCI_LOC) 
@@ -18,7 +19,7 @@ class CustomInstallCommand(install):
        os.chdir("build_pipeline")
        print('INFO: Downloading germlines from IMGT and building HMMs...')
        print("INFO: running 'RUN_pipeline.sh', this will take a couple a minutes.")
-       proc = subprocess.Popen(["bash", "RUN_pipeline.sh"], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+       proc = subprocess.Popen(["bash", "RUN_pipeline.sh"], stdout = subprocess.PIPE, stderr = subprocess.PIPE,env=os.environ)
        o, e = proc.communicate()
 
        print(o.decode())
